@@ -11,6 +11,7 @@ const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
 
 const app = express();
+const { PORT = 3000 } = process.env;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -37,4 +38,6 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
   // useFindAndModify: false,
 });
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+});
