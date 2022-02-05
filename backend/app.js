@@ -9,12 +9,14 @@ const { createUser, login } = require("./controllers/users");
 const errorHandler = require("./middlewares/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 const { PORT = 3000 } = process.env;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(requestLogger);
 
 // -- Auths routes
 app.post("/signin", login);
@@ -28,6 +30,8 @@ app.use(cardsRoutes);
 app.use((req, res, next) => {
   next(new NotFoundError("Был запрошен несуществующий роут"));
 });
+
+app.use(errorLogger);
 app.use(errorHandler);
 
 mongoose.connect("mongodb://localhost:27017/mestodb", {
