@@ -99,7 +99,7 @@ const login = (req, res, next) => {
           .cookie("jwt", token, {
             httpOnly: true,
           })
-          .end();
+          .status(OK_SUCCESS_CODE).send(user); // вернём статус и данные
       });
     })
     .catch(next);
