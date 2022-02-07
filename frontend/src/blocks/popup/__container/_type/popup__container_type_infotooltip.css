@@ -1,0 +1,12 @@
+.popup__container_type_infotooltip {
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container_type_infotooltip {
+    min-height: 308px;
+  }
+}

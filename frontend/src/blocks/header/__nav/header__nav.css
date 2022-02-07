@@ -1,0 +1,19 @@
+.header__nav {
+  justify-self: right;
+  font-size: 18px;
+  line-height: 1.22;
+  text-align: right;
+  margin-left: 24px;
+}
+
+@media screen and (max-width: 600px) {
+  .header__nav {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .header__nav {
+    margin-right: 30px;
+  }
+}

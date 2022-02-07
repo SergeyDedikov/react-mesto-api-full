@@ -1,0 +1,6 @@
+.header__container-general {
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  align-items: center;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}

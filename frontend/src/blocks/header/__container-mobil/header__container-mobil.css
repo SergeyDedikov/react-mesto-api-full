@@ -1,0 +1,15 @@
+.header__container-mobil {
+  display: none;
+  align-items: center;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+@media screen and (max-width: 600px) {
+  .header__container-mobil {
+    padding: 40px 0;
+    flex-direction: column;
+    font-size: 18px;
+    line-height: 1.22;
+    text-align: center;
+  }
+}

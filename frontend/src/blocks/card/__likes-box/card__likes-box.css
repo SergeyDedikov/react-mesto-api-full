@@ -1,0 +1,6 @@
+.card__likes-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  justify-self: right;
+}

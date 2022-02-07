@@ -1,0 +1,7 @@
+.card__info {
+  margin: 23px 20px 26px;
+  display: grid;
+  grid-template-columns: calc(100% - 25px) 25px;
+  justify-content: space-between;
+  align-items: center;
+}

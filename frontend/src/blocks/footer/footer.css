@@ -1,0 +1,36 @@
+.footer {
+  width: calc(100% - 2 * 200px);
+  margin: 0 auto;
+  padding: 66px 0 60px;
+}
+
+@media screen and (max-width: 1100px) {
+  .footer {
+    width: 683px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .footer {
+    width: calc(100% - 2 * 100px);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .footer {
+    width: 483px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer {
+    width: calc(100% - 2 * 50px);
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .footer {
+    width: calc(100% - 2 * 19px);
+    padding: 48px 0 36px;
+  }
+}
