@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/react-mesto-auth">
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,
