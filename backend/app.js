@@ -10,6 +10,7 @@ const errorHandler = require("./middlewares/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const corsHandler = require ('./middlewares/cors-handler');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -17,6 +18,7 @@ const { PORT = 3000 } = process.env;
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(corsHandler); // обработаем CORS-запросы
 
 // -- Auths routes
 app.post("/signin", login);
