@@ -1,4 +1,4 @@
-const BASE_URL = "https://auth.nomoreparties.co";
+const BASE_URL = "http://api.mesto.coolplaces.nomoredomains.xyz";
 
 class Auth {
   constructor(url) {
