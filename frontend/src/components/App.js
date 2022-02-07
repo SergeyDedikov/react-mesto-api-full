@@ -62,7 +62,7 @@ function App() {
   }, []);
 
   // -- Проверяем токен пользователя
-  function handleTokenCheck() {
+/*   function handleTokenCheck() {
     if (localStorage.getItem("token")) {
       auth
         .checkToken(localStorage.getItem("token"))
@@ -86,13 +86,13 @@ function App() {
           }
         });
     }
-  }
+  } */
 
-  useEffect(() => {
+/*   useEffect(() => {
     handleTokenCheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+ */
   // -- Регистрация пользователя
   function onRegister(data) {
     auth
@@ -109,9 +109,10 @@ function App() {
       })
       .catch((err) => {
         showInfoTooltip(false);
-        if (err === "400") {
-          setMessage("Некорректно заполнено одно из полей. Попробуйте ещё раз.");
-        }
+        setMessage(err.message);
+        // if (err === "400") {
+        //   setMessage("Некорректно заполнено одно из полей. Попробуйте ещё раз.");
+        // }
       });
   }
 
@@ -120,17 +121,23 @@ function App() {
     auth
       .login(data)
       .then((res) => {
-        localStorage.setItem("token", res.token);
-        handleTokenCheck();
+        console.log(res);
+        if (res.statusCode === 200) {
+          setLoggedIn(true);
+          setCurrentUserEmail(res.user.email);
+          // переходим на главную страницу
+          history.push("/");
+        }
       })
       .catch((err) => {
         showInfoTooltip(false);
-        if (err === "400") {
+        setMessage(err.message);
+        /* if (err === "400") {
           setMessage("Не передано одно из полей. Попробуйте ещё раз.");
         }
         if (err === "401") {
           setMessage("Пользователь с email не найден. Попробуйте ещё раз.");
-        }
+        } */
       });
   }
 
