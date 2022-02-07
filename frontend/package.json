@@ -14,7 +14,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "deploy": "npm run build && scp -r ./build/* serded59@178.154.206.41:/home/serded59/react-mesto-api-full/frontend",
+    "deploy": "npm run build && scp -r ./build/* serded59@178.154.206.41:/home/serded59/react-mesto-api-full/frontend/build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
