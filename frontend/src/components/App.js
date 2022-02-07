@@ -61,8 +61,21 @@ function App() {
       });
   }, []);
 
+  // -- Запрос авторизации (проверка кукишей)
+  /* useEffect(() => {
+    axios
+      .get("http://api.mesto.coolplaces.nomoredomains.xyz/users/me")
+      .then((res) => {
+        console.log(res);
+        if (res.ok) {
+          setLoggedIn(true);
+          setCurrentUserEmail(res.email);
+        }
+      });
+  }, []); */
+
   // -- Проверяем токен пользователя
-/*   function handleTokenCheck() {
+  /*   function handleTokenCheck() {
     if (localStorage.getItem("token")) {
       auth
         .checkToken(localStorage.getItem("token"))
@@ -88,7 +101,7 @@ function App() {
     }
   } */
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     handleTokenCheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -109,7 +122,7 @@ function App() {
       })
       .catch((err) => {
         showInfoTooltip(false);
-        setMessage(err.message);
+        setMessage(err);
         // if (err === "400") {
         //   setMessage("Некорректно заполнено одно из полей. Попробуйте ещё раз.");
         // }
@@ -121,23 +134,20 @@ function App() {
     auth
       .login(data)
       .then((res) => {
-        console.log(res);
-        if (res.statusCode === 200) {
-          setLoggedIn(true);
-          setCurrentUserEmail(res.user.email);
-          // переходим на главную страницу
-          history.push("/");
-        }
+        setLoggedIn(true);
+        setCurrentUserEmail(res.email);
+        // переходим на главную страницу
+        history.push("/");
       })
       .catch((err) => {
         showInfoTooltip(false);
-        setMessage(err.message);
+        setMessage(err);
         /* if (err === "400") {
-          setMessage("Не передано одно из полей. Попробуйте ещё раз.");
-        }
-        if (err === "401") {
-          setMessage("Пользователь с email не найден. Попробуйте ещё раз.");
-        } */
+        setMessage("Не передано одно из полей. Попробуйте ещё раз.");
+      }
+      if (err === "401") {
+        setMessage("Пользователь с email не найден. Попробуйте ещё раз.");
+      } */
       });
   }
 

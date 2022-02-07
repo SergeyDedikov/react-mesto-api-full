@@ -12,7 +12,10 @@ class Auth {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`${res.status}`);
+      return res.json().then((data) => {
+        const message = data.message || "Что-то пошло не так!";
+        return Promise.reject(message);
+      });
     }
   };
 
