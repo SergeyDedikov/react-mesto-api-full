@@ -32,7 +32,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // предварительный запрос CORS по всем маршрутам
+app.options("*", cors()); // предварительный запрос CORS по всем маршрутам
 
 // -- Auths routes
 app.post("/signin", login);
