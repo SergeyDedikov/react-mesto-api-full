@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { CurentUserContext, defaultUser } from "../contexts/CurrentUserContext";
+import axios from 'axios';
 
 import "../index.css";
 import api from "../utils/api";
@@ -62,9 +63,11 @@ function App() {
   }, []);
 
   // -- Запрос авторизации (проверка кукишей)
-  /* useEffect(() => {
+  useEffect(() => {
     axios
-      .get("http://api.mesto.coolplaces.nomoredomains.xyz/users/me")
+      .get("http://api.mesto.coolplaces.nomoredomains.xyz/users/me", {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res);
         if (res.ok) {
@@ -72,7 +75,7 @@ function App() {
           setCurrentUserEmail(res.email);
         }
       });
-  }, []); */
+  }, []);
 
   // -- Проверяем токен пользователя
   /*   function handleTokenCheck() {
