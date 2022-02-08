@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const usersRoutes = require("./routes/users");
 const cardsRoutes = require("./routes/cards");
@@ -10,7 +11,7 @@ const errorHandler = require("./middlewares/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const corsHandler = require ('./middlewares/cors-handler');
+// const corsHandler = require ('./middlewares/cors-handler');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -18,7 +19,20 @@ const { PORT = 3000 } = process.env;
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
-app.use(corsHandler); // обработаем CORS-запросы
+// app.use(corsHandler); // обработаем CORS-запросы
+
+const corsOptions = {
+  origin: [
+    "https://mesto.coolplaces.nomoredomains.work",
+    "http://mesto.coolplaces.nomoredomains.work",
+    "localhost:3000",
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.options('*', cors(corsOptions)); // предварительный запрос CORS
+app.use(cors(corsOptions));
 
 // -- Auths routes
 app.post("/signin", login);
