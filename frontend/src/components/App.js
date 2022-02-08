@@ -50,16 +50,17 @@ function App() {
 
   // -- Запрос данных с сервера
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCardList()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.log(err);
-        showInfoTooltip(false);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCardList()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   // -- Запрос авторизации (проверка кукишей)
   /* useEffect(() => {
@@ -103,13 +104,13 @@ function App() {
     }
   } */
 
-  useEffect(() => {
+  /* useEffect(() => {
     auth
       .checkToken()
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); */
  
   // -- Регистрация пользователя
   function onRegister(data) {
@@ -141,9 +142,8 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         setCurrentUserEmail(res.email);
-        // переходим на главную страницу
-        history.push("/");
       })
+      .then(() => history.push("/")) // переходим на главную страницу
       .catch((err) => {
         showInfoTooltip(false);
         setMessage(err);

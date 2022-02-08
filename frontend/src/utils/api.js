@@ -4,6 +4,8 @@ class Api {
   constructor(url) {
     this._url = url;
     this._headers = {
+      // Credentials: "same-origin",
+      credentials: "include",
       "Content-Type": "application/json",
     };
   }
