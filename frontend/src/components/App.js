@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { CurentUserContext, defaultUser } from "../contexts/CurrentUserContext";
-import axios from 'axios';
 
 import "../index.css";
 import api from "../utils/api";
@@ -63,7 +62,7 @@ function App() {
   }, []);
 
   // -- Запрос авторизации (проверка кукишей)
-  useEffect(() => {
+  /* useEffect(() => {
     axios
       .get("http://api.mesto.coolplaces.nomoredomains.xyz/users/me", {
         withCredentials: true,
@@ -75,7 +74,7 @@ function App() {
           setCurrentUserEmail(res.email);
         }
       });
-  }, []);
+  }, []); */
 
   // -- Проверяем токен пользователя
   /*   function handleTokenCheck() {
@@ -104,11 +103,14 @@ function App() {
     }
   } */
 
-  /*   useEffect(() => {
-    handleTokenCheck();
+  useEffect(() => {
+    auth
+      .checkToken()
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
- */
+ 
   // -- Регистрация пользователя
   function onRegister(data) {
     auth
@@ -156,7 +158,6 @@ function App() {
 
   // -- Выход из системы
   function onSignOut() {
-    localStorage.removeItem("token");
     history.push("/sign-in");
     setCurrentUserEmail("");
     setLoggedIn(false);

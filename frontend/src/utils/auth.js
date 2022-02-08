@@ -42,10 +42,11 @@ class Auth {
   }
 
   checkToken() {
-    return fetch(`${this._url}/users/me`, {
+    return fetch(`${this._url}`, {
       method: "GET",
       headers: {
-        "Content-Type": "plain/text",
+        Credentials: "same-origin",
+        "Content-Type": "application/json",
       },
     }).then(this._checkResult);
   }
