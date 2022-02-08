@@ -31,7 +31,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.options('*', cors(corsOptions)); // предварительный запрос CORS
+app.options("*", cors()); // предварительный запрос CORS по всем маршрутам
 app.use(cors(corsOptions));
 
 // -- Auths routes
