@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 
 const usersRoutes = require("./routes/users");
 const cardsRoutes = require("./routes/cards");
-const { createUser, login } = require("./controllers/users");
+const { createUser, login, signout } = require("./controllers/users");
 const errorHandler = require("./middlewares/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
@@ -23,6 +23,7 @@ app.use(corsHandler); // обработаем CORS-запросы
 // -- Auths routes
 app.post("/signin", login);
 app.post("/signup", createUser);
+app.get('/signout', signout);
 
 // -- Others routes
 app.use(auth);

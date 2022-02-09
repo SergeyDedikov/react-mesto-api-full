@@ -105,6 +105,13 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
+const signout = (req, res) => {
+  // очистим значение jwt в куках
+  res
+      .cookie('jwt', '')
+      .end();
+};
+
 module.exports = {
   getUsers,
   getUser,
@@ -113,4 +120,5 @@ module.exports = {
   updateUser,
   updateAvatar,
   login,
+  signout,
 };
