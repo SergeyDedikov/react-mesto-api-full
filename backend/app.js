@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
 
 const usersRoutes = require("./routes/users");
 const cardsRoutes = require("./routes/cards");
@@ -16,6 +17,7 @@ const corsHandler = require ('./middlewares/cors-handler');
 const app = express();
 const { PORT = 3000, DB_PATH } = process.env;
 
+app.use(helmet);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
