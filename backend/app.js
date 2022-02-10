@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -11,12 +11,14 @@ const { createUser, login, signout } = require("./controllers/users");
 const errorHandler = require("./middlewares/error-handler");
 const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const corsHandler = require ('./middlewares/cors-handler');
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+const corsHandler = require("./middlewares/cors-handler");
+const limiter = require("./middlewares/rate-limit");
 
 const app = express();
 const { PORT = 3000, DB_PATH } = process.env;
 
+app.use(limiter);
 app.use(helmet);
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -26,7 +28,7 @@ app.use(corsHandler); // обработаем CORS-запросы
 // -- Auths routes
 app.post("/signin", login);
 app.post("/signup", createUser);
-app.get('/signout', signout);
+app.get("/signout", signout);
 
 // -- Others routes
 app.use(auth);
