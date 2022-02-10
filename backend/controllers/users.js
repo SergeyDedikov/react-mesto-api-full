@@ -99,18 +99,19 @@ const login = (req, res, next) => {
           .cookie("jwt", token, {
             httpOnly: true,
           })
-          .status(OK_SUCCESS_CODE).send(user); // вернём статус и данные
+          .status(OK_SUCCESS_CODE)
+          .send(user); // вернём статус и данные
       });
     })
     .catch(next);
 };
 
-const signout = (req, res) => {
+const signout = (req, res) =>
   // очистим значение jwt в куках
   res
-      .cookie('jwt', '')
-      .end();
-};
+    .cookie("jwt", "")
+    .status(OK_SUCCESS_CODE)
+    .send({ message: "Вы вышли из системы" });
 
 module.exports = {
   getUsers,
