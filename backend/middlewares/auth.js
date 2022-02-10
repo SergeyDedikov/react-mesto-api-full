@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 const Unauthorized = require("../errors/unauthorized-error");
 const Forbidden = require("../errors/forbidden-error");
 
@@ -15,7 +16,10 @@ const auth = (req, res, next) => {
 
   try {
     // проверяем токен на подлинность
-    payload = jwt.verify(token, "secret-string");
+    payload = jwt.verify(
+      token,
+      NODE_ENV === "production" ? JWT_SECRET : "secret-string"
+    );
   } catch (err) {
     return next(new Unauthorized("Некорректный токен"));
   }
