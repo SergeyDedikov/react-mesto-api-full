@@ -4,8 +4,6 @@ class Api {
   constructor(url) {
     this._url = url;
     this._headers = {
-      // Credentials: "same-origin",
-      credentials: "include",
       "Content-Type": "application/json",
     };
   }
@@ -25,6 +23,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
@@ -32,6 +31,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
@@ -39,6 +39,7 @@ class Api {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         avatar,
       }),
@@ -49,6 +50,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name,
         about,
@@ -60,6 +62,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name,
         link,
@@ -71,6 +74,7 @@ class Api {
     return fetch(`${this._url}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
@@ -78,6 +82,7 @@ class Api {
     return fetch(`${this._url}/cards/${card._id}/likes`, {
       method: isLiked ? "PUT" : "DELETE",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 }

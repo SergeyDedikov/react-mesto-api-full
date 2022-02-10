@@ -62,56 +62,31 @@ function App() {
     }
   }, [loggedIn]);
 
-  // -- Запрос авторизации (проверка кукишей)
-  /* useEffect(() => {
-    axios
-      .get("http://api.mesto.coolplaces.nomoredomains.xyz/users/me", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.ok) {
-          setLoggedIn(true);
-          setCurrentUserEmail(res.email);
-        }
-      });
-  }, []); */
-
   // -- Проверяем токен пользователя
-  /*   function handleTokenCheck() {
-    if (localStorage.getItem("token")) {
-      auth
-        .checkToken(localStorage.getItem("token"))
-        .then((res) => {
-          if (res) {
-            // меняем переменные состояния авторизации
-            setLoggedIn(true);
-            setCurrentUserEmail(res.data.email);
-            // переходим на главную страницу
-            history.push("/");
-          }
-        })
-        .catch((err) => {
-          showInfoTooltip(false);
-          // обработаем ошибки
-          if (err === "400") {
-            setMessage("Токен не передан или передан не в том формате");
-          }
-          if (err === "401") {
-            setMessage("Переданный токен некорректен");
-          }
-        });
-    }
-  } */
-
-  /* useEffect(() => {
+  function handleTokenCheck() {
     auth
       .checkToken()
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        if (res) {
+          // меняем переменные состояния авторизации
+          setLoggedIn(true);
+          setCurrentUserEmail(res.email);
+          // переходим на главную страницу
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    if (!loggedIn) {
+      handleTokenCheck();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); */
- 
+  }, []);
+
   // -- Регистрация пользователя
   function onRegister(data) {
     auth
@@ -129,9 +104,6 @@ function App() {
       .catch((err) => {
         showInfoTooltip(false);
         setMessage(err);
-        // if (err === "400") {
-        //   setMessage("Некорректно заполнено одно из полей. Попробуйте ещё раз.");
-        // }
       });
   }
 
@@ -147,20 +119,15 @@ function App() {
       .catch((err) => {
         showInfoTooltip(false);
         setMessage(err);
-        /* if (err === "400") {
-        setMessage("Не передано одно из полей. Попробуйте ещё раз.");
-      }
-      if (err === "401") {
-        setMessage("Пользователь с email не найден. Попробуйте ещё раз.");
-      } */
       });
   }
 
   // -- Выход из системы
   function onSignOut() {
+    auth.logout();
     history.push("/sign-in");
-    setCurrentUserEmail("");
     setLoggedIn(false);
+    setCurrentUserEmail("");
   }
 
   // -- Обновление профиля
@@ -206,7 +173,7 @@ function App() {
 
   function handleCardLike(card) {
     // Проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api

@@ -34,6 +34,7 @@ class Auth {
     return fetch(`${this._url}/signin`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         password,
         email,
@@ -41,13 +42,19 @@ class Auth {
     }).then(this._checkResult);
   }
 
-  checkToken() {
-    return fetch(`${this._url}`, {
+  logout() {
+    return fetch(`${this._url}/signout`, {
       method: "GET",
-      headers: {
-        Credentials: "same-origin",
-        "Content-Type": "application/json",
-      },
+      headers: this._headers,
+      credentials: "include",
+    }).then(this._checkResult);
+  }
+
+  checkToken() {
+    return fetch(`${this._url}/users/me`, {
+      method: "GET",
+      headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 }
