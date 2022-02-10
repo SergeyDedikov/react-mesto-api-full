@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -13,7 +14,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsHandler = require ('./middlewares/cors-handler');
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_PATH } = process.env;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -37,7 +38,7 @@ app.use((req, res, next) => {
 app.use(errorLogger);
 app.use(errorHandler);
 
-mongoose.connect("mongodb://localhost:27017/mestodb", {
+mongoose.connect(DB_PATH, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // следующие опции нужно закомментировать для MongoDB <=v.4.2
