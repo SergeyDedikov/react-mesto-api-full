@@ -18,8 +18,8 @@ const limiter = require("./middlewares/rate-limit");
 const app = express();
 const { PORT = 3000, DB_PATH } = process.env;
 
-app.use(limiter);
-app.use(helmet);
+// app.use(limiter);
+// app.use(helmet);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
