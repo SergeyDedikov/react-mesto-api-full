@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "env": "scp .env serded59@178.154.206.41:/home/serded59/react-mesto-api-full/backend"
   },
   "author": "Serge Dedikov",
   "license": "ISC",
