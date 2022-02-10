@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 const usersRoutes = require("./routes/users");
 const cardsRoutes = require("./routes/cards");
@@ -13,7 +13,7 @@ const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const corsHandler = require("./middlewares/cors-handler");
-const limiter = require("./middlewares/rate-limit");
+// const limiter = require("./middlewares/rate-limit");
 
 const app = express();
 const { PORT = 3000, DB_PATH } = process.env;
