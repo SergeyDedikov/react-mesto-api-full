@@ -2,6 +2,7 @@ const allowedCors = [
   "https://mesto.coolplaces.nomoredomains.work",
   "http://mesto.coolplaces.nomoredomains.work",
   "http://localhost:3000",
+  "http://localhost:3001",
 ];
 
 const corsHandler = (req, res, next) => {
@@ -28,6 +29,7 @@ const corsHandler = (req, res, next) => {
     res.header("Access-Control-Allow-Headers", requestHeaders);
     // завершаем обработку запроса и возвращаем результат клиенту
     res.end();
+    return;
   }
 
   next();
