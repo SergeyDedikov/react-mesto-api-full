@@ -6,7 +6,17 @@ const Forbidden = require("../errors/forbidden-error");
 const getCards = (req, res, next) =>
   Card.find({})
     .then((cards) => {
-      res.status(OK_SUCCESS_CODE).send(cards);
+      // отсортируем карточки по дате создания, сначала новые
+      const cardsSort = cards.sort((a, b) => {
+        if (a.createdAt < b.createdAt) {
+          return 1;
+        }
+        if (a.createdAt > b.createdAt) {
+          return -1;
+        }
+        return 0;
+      });
+      return res.status(OK_SUCCESS_CODE).send(cardsSort);
     })
     .catch(next);
 
