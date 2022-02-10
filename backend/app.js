@@ -13,13 +13,13 @@ const NotFoundError = require("./errors/not-found-error");
 const auth = require("./middlewares/auth");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const corsHandler = require("./middlewares/cors-handler");
-// const limiter = require("./middlewares/rate-limit");
+const limiter = require("./middlewares/rate-limit");
 
 const app = express();
 const { PORT = 3000, DB_PATH } = process.env;
 
-// app.use(limiter);
 // app.use(helmet);
+app.use(limiter);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
