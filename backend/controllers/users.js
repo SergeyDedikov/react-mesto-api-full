@@ -103,6 +103,9 @@ const login = (req, res, next) => {
         return res
           .cookie("jwt", token, {
             httpOnly: true,
+            secure: true,
+            sameSite: true,
+            maxAge: 7 * 24 * 3600000,
           })
           .status(OK_SUCCESS_CODE)
           .send(user); // вернём статус и данные
