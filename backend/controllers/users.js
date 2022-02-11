@@ -102,7 +102,6 @@ const login = (req, res, next) => {
         // вернём куку с токеном
         return res
           .cookie("jwt", token, {
-            domain: 'mesto.coolplaces.nomoredomains.work',
             path: '/*',
             httpOnly: true,
             secure: true,
