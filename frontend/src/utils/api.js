@@ -1,4 +1,4 @@
-const BASE_URL = "http://api.mesto.coolplaces.nomoredomains.xyz";
+const BASE_URL = "https://api.mesto.coolplaces.nomoredomains.xyz";
 
 class Api {
   constructor(url) {
