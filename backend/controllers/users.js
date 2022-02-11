@@ -102,7 +102,7 @@ const login = (req, res, next) => {
         // вернём куку с токеном
         return res
           .cookie("jwt", token, {
-            path: '/*',
+            signed: true,
             httpOnly: true,
             secure: true,
             sameSite: true,
