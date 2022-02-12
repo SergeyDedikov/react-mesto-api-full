@@ -52,7 +52,7 @@ function App() {
   // Краш-тест сервера
   function getCrashTest() {
     console.log("Сейчас произойдёт перезагрузка сервера!");
-    api.getCrash().catch((err) => console.log(err));
+    api.getCrash().catch(() => console.log("Ошибка сервера!"));
   }
 
   // -- Запрос данных с сервера

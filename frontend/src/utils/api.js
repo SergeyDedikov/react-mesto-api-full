@@ -89,7 +89,6 @@ class Api {
   getCrash() {
     return fetch(`${this._url}/crash-test`, {
       method: "GET",
-      //  headers: this._headers,
     }).then(this._checkResult);
   }
 }
