@@ -23,6 +23,14 @@ app.use(cookieParser());
 app.use(requestLogger);
 app.use(corsHandler); // обработаем CORS-запросы
 
+// Краш-тест
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 3000);
+});
+
 // -- Auths routes
 app.post("/signin", login);
 app.post("/signup", createUser);
