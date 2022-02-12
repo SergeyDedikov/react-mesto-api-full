@@ -104,7 +104,7 @@ const login = (req, res, next) => {
           .cookie("jwt", token, {
             httpOnly: true,
             secure: true,
-            sameSite: true,
+            sameSite: "none",
             maxAge: 7 * 24 * 3600000,
           })
           .status(OK_SUCCESS_CODE)
@@ -117,7 +117,10 @@ const login = (req, res, next) => {
 const signout = (req, res) =>
   // очистим значение jwt в куках
   res
-    .cookie("jwt", "")
+    .cookie("jwt", "", {
+      secure: true,
+      sameSite: "none",
+    })
     .status(OK_SUCCESS_CODE)
     .send({ message: "Вы вышли из системы" });
 
