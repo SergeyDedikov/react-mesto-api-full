@@ -50,13 +50,6 @@ class Auth {
     }).then(this._checkResult);
   }
 
-  checkToken() {
-    return fetch(`${this._url}/users/me`, {
-      method: "GET",
-      headers: this._headers,
-      credentials: "include",
-    }).then(this._checkResult);
-  }
 }
 
 const auth = new Auth(BASE_URL);

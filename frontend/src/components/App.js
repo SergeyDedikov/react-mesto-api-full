@@ -71,8 +71,8 @@ function App() {
 
   // -- Проверяем токен пользователя
   function handleTokenCheck() {
-    auth
-      .checkToken()
+    api
+      .getUserInfo()
       .then((res) => {
         if (res) {
           // меняем переменные состояния авторизации
