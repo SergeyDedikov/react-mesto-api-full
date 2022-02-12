@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 const User = require("../models/user");
 const { OK_SUCCESS_CODE, CREATED_SUCCESS_CODE } = require("../utils/constants");
 const NotFoundError = require("../errors/not-found-error");
@@ -91,19 +92,37 @@ const login = (req, res, next) => {
           );
         }
         // аутентификация успешна — создадим токен на 7 дней
-        const token = jwt.sign({ _id: user._id }, "secret-string", {
-          expiresIn: "7d",
-        });
+        const token = jwt.sign(
+          { _id: user._id },
+          NODE_ENV === "production" ? JWT_SECRET : "secret-string",
+          {
+            expiresIn: "7d",
+          }
+        );
         // вернём куку с токеном
         return res
           .cookie("jwt", token, {
             httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 3600000,
           })
-          .end();
+          .status(OK_SUCCESS_CODE)
+          .send(user); // вернём статус и данные
       });
     })
     .catch(next);
 };
+
+const signout = (req, res) =>
+  // очистим значение jwt в куках
+  res
+    .cookie("jwt", "", {
+      secure: true,
+      sameSite: "none",
+    })
+    .status(OK_SUCCESS_CODE)
+    .send({ message: "Вы вышли из системы" });
 
 module.exports = {
   getUsers,
@@ -113,4 +132,5 @@ module.exports = {
   updateUser,
   updateAvatar,
   login,
+  signout,
 };
