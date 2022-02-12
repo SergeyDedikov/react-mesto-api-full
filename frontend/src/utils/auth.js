@@ -1,4 +1,4 @@
-const BASE_URL = "https://auth.nomoreparties.co";
+const BASE_URL = "https://api.mesto.coolplaces.nomoredomains.xyz";
 
 class Auth {
   constructor(url) {
@@ -12,7 +12,10 @@ class Auth {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`${res.status}`);
+      return res.json().then((data) => {
+        const message = data.message || "Что-то пошло не так!";
+        return Promise.reject(message);
+      });
     }
   };
 
@@ -31,6 +34,7 @@ class Auth {
     return fetch(`${this._url}/signin`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         password,
         email,
@@ -38,13 +42,19 @@ class Auth {
     }).then(this._checkResult);
   }
 
-  checkToken(token) {
+  logout() {
+    return fetch(`${this._url}/signout`, {
+      method: "GET",
+      headers: this._headers,
+      credentials: "include",
+    }).then(this._checkResult);
+  }
+
+  checkToken() {
     return fetch(`${this._url}/users/me`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
+      headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 }

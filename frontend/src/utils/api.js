@@ -1,18 +1,9 @@
-//* API config */
-
-const apiConfig = {
-  url: "https://mesto.nomoreparties.co",
-  cohortId: "cohort-29",
-  tokenId: "aac8a826-6020-4164-947b-69b028e1e5c6",
-};
+const BASE_URL = "https://api.mesto.coolplaces.nomoredomains.xyz";
 
 class Api {
-  constructor(config) {
-    this._url = config.url;
-    this._cohortId = config.cohortId;
-    this._tokenId = config.tokenId;
+  constructor(url) {
+    this._url = url;
     this._headers = {
-      authorization: this._tokenId,
       "Content-Type": "application/json",
     };
   }
@@ -21,28 +12,34 @@ class Api {
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`${res.status}`);
+      return res.json().then((data) => {
+        const message = data.message || "Что-то пошло не так!";
+        return Promise.reject(message);
+      });
     }
   };
 
   getCardList() {
-    return fetch(`${this._url}/v1/${this._cohortId}/cards`, {
+    return fetch(`${this._url}/cards`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
   getUserInfo() {
-    return fetch(`${this._url}/v1/${this._cohortId}/users/me`, {
+    return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
   setUserAvatar({ avatar }) {
-    return fetch(`${this._url}/v1/${this._cohortId}/users/me/avatar`, {
+    return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         avatar,
       }),
@@ -50,9 +47,10 @@ class Api {
   }
 
   setUserInfo({ name, about }) {
-    return fetch(`${this._url}/v1/${this._cohortId}/users/me`, {
+    return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name,
         about,
@@ -61,9 +59,10 @@ class Api {
   }
 
   addNewCard({ name, link }) {
-    return fetch(`${this._url}/v1/${this._cohortId}/cards`, {
+    return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
+      credentials: "include",
       body: JSON.stringify({
         name,
         link,
@@ -72,20 +71,28 @@ class Api {
   }
 
   deleteCard(card) {
-    return fetch(`${this._url}/v1/${this._cohortId}/cards/${card._id}`, {
+    return fetch(`${this._url}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
+      credentials: "include",
     }).then(this._checkResult);
   }
 
   changeLikeCardStatus(card, isLiked) {
-    return fetch(`${this._url}/v1/${this._cohortId}/cards/likes/${card._id}`, {
+    return fetch(`${this._url}/cards/${card._id}/likes`, {
       method: isLiked ? "PUT" : "DELETE",
       headers: this._headers,
+      credentials: "include",
+    }).then(this._checkResult);
+  }
+
+  getCrash() {
+    return fetch(`${this._url}/crash-test`, {
+      method: "GET",
     }).then(this._checkResult);
   }
 }
 
-const api = new Api(apiConfig);
+const api = new Api(BASE_URL);
 
 export default api;

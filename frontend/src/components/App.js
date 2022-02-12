@@ -17,6 +17,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
+import CrashTest from "./CrashTest";
 
 function App() {
   const history = useHistory();
@@ -48,48 +49,49 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Краш-тест сервера
+  function getCrashTest() {
+    console.log("Сейчас произойдёт перезагрузка сервера!");
+    api.getCrash().catch(() => console.log("Ошибка сервера!"));
+  }
+
   // -- Запрос данных с сервера
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCardList()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.log(err);
-        showInfoTooltip(false);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCardList()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   // -- Проверяем токен пользователя
   function handleTokenCheck() {
-    if (localStorage.getItem("token")) {
-      auth
-        .checkToken(localStorage.getItem("token"))
-        .then((res) => {
-          if (res) {
-            // меняем переменные состояния авторизации
-            setLoggedIn(true);
-            setCurrentUserEmail(res.data.email);
-            // переходим на главную страницу
-            history.push("/");
-          }
-        })
-        .catch((err) => {
-          showInfoTooltip(false);
-          // обработаем ошибки
-          if (err === "400") {
-            setMessage("Токен не передан или передан не в том формате");
-          }
-          if (err === "401") {
-            setMessage("Переданный токен некорректен");
-          }
-        });
-    }
+    auth
+      .checkToken()
+      .then((res) => {
+        if (res) {
+          // меняем переменные состояния авторизации
+          setLoggedIn(true);
+          setCurrentUserEmail(res.email);
+          // переходим на главную страницу
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
+  // Проверка наличия токена
   useEffect(() => {
-    handleTokenCheck();
+    if (!loggedIn) {
+      handleTokenCheck();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,9 +111,7 @@ function App() {
       })
       .catch((err) => {
         showInfoTooltip(false);
-        if (err === "400") {
-          setMessage("Некорректно заполнено одно из полей. Попробуйте ещё раз.");
-        }
+        setMessage(err);
       });
   }
 
@@ -120,26 +120,22 @@ function App() {
     auth
       .login(data)
       .then((res) => {
-        localStorage.setItem("token", res.token);
-        handleTokenCheck();
+        setLoggedIn(true);
+        setCurrentUserEmail(res.email);
       })
+      .then(() => history.push("/")) // переходим на главную страницу
       .catch((err) => {
         showInfoTooltip(false);
-        if (err === "400") {
-          setMessage("Не передано одно из полей. Попробуйте ещё раз.");
-        }
-        if (err === "401") {
-          setMessage("Пользователь с email не найден. Попробуйте ещё раз.");
-        }
+        setMessage(err);
       });
   }
 
   // -- Выход из системы
   function onSignOut() {
-    localStorage.removeItem("token");
+    auth.logout();
     history.push("/sign-in");
-    setCurrentUserEmail("");
     setLoggedIn(false);
+    setCurrentUserEmail("");
   }
 
   // -- Обновление профиля
@@ -185,7 +181,7 @@ function App() {
 
   function handleCardLike(card) {
     // Проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
@@ -299,6 +295,12 @@ function App() {
         </Route>
         <Route path="/sign-in">
           <Login onLogin={onLogin} />
+        </Route>
+        <Route path="/crash-test">
+          <CrashTest
+            getCrashTest={getCrashTest}
+            handleTokenCheck={handleTokenCheck}
+          />
         </Route>
       </Switch>
 
