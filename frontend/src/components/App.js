@@ -87,6 +87,7 @@ function App() {
       });
   }
 
+  // Проверка наличия токена
   useEffect(() => {
     if (!loggedIn) {
       handleTokenCheck();
@@ -296,7 +297,10 @@ function App() {
           <Login onLogin={onLogin} />
         </Route>
         <Route path="/crash-test">
-          <CrashTest getCrashTest={getCrashTest} />
+          <CrashTest
+            getCrashTest={getCrashTest}
+            handleTokenCheck={handleTokenCheck}
+          />
         </Route>
       </Switch>
 
