@@ -85,6 +85,13 @@ class Api {
       credentials: "include",
     }).then(this._checkResult);
   }
+
+  getCrash() {
+    return fetch(`${this._url}/crash-test`, {
+      method: "GET",
+      headers: this._headers,
+    }).then(this._checkResult);
+  }
 }
 
 const api = new Api(BASE_URL);
