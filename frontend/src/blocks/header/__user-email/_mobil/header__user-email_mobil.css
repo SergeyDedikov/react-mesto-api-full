@@ -1,0 +1,12 @@
+.header__user-email_mobil {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .header__user-email_mobil {
+    display: block;
+    text-align: center;
+    justify-self: center;
+    margin-bottom: 18px;
+  }
+}

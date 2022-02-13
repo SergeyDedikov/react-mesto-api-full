@@ -1,0 +1,10 @@
+.form__error {
+  position: absolute;
+  opacity: 0;
+  font-size: 12px;
+  line-height: 15px;
+  color: #f00;
+  top: calc(100% + 5px);
+  left: 0;
+  transition: 0.2s;
+}

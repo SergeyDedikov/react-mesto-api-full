@@ -1,0 +1,18 @@
+.popup__close {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: center / contain no-repeat
+    url(../../../images/icon-close-form.svg);
+}
+
+@media screen and (max-width: 600px) {
+  .popup__close {
+    width: 20px;
+    height: 20px;
+    top: -36px;
+    right: 0;
+  }
+}

@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "env": "scp .env serded59@178.154.206.41:/home/serded59/react-mesto-api-full/backend"
   },
   "author": "Serge Dedikov",
   "license": "ISC",
@@ -21,7 +22,9 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.0",
     "express": "^4.17.2",
+    "express-rate-limit": "^6.2.1",
     "express-winston": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.6",

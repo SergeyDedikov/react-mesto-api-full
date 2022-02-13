@@ -1,0 +1,9 @@
+.form__button_authentication {
+  margin-top: 215px;
+}
+
+@media screen and (max-width: 600px) {
+  .form__button_authentication {
+    margin-top: 173px;
+  }
+}

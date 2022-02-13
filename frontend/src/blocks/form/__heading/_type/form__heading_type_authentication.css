@@ -1,0 +1,11 @@
+.form__heading_type_authentication {
+  color: #fff;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .form__heading_type_authentication {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

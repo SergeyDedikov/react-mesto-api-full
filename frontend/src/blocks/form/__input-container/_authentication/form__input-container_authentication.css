@@ -1,0 +1,5 @@
+@media screen and (max-width: 600px) {
+  .form__input-container_authentication {
+    margin-top: 38px;
+  }
+}
