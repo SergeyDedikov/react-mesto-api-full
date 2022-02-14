@@ -2,14 +2,13 @@ const jwt = require("jsonwebtoken");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const Unauthorized = require("../errors/unauthorized-error");
-const Forbidden = require("../errors/forbidden-error");
 
 const auth = (req, res, next) => {
   // извлекаем токен из куков запроса
   const token = req.cookies.jwt;
 
   if (!token) {
-    return next(new Forbidden("Необходима авторизация"));
+    return next(new Unauthorized("Необходима авторизация"));
   }
 
   let payload;
