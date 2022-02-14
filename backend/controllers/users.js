@@ -6,7 +6,8 @@ const User = require("../models/user");
 const { OK_SUCCESS_CODE, CREATED_SUCCESS_CODE } = require("../utils/constants");
 const NotFoundError = require("../errors/not-found-error");
 const Unauthorized = require("../errors/unauthorized-error");
-const ConflictError = require('../errors/conflict-error');
+const ConflictError = require("../errors/conflict-error");
+const BadRequestError = require("../errors/bad-request-error");
 
 const getUsers = (req, res, next) =>
   User.find({})
