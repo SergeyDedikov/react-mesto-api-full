@@ -6,6 +6,7 @@ const User = require("../models/user");
 const { OK_SUCCESS_CODE, CREATED_SUCCESS_CODE } = require("../utils/constants");
 const NotFoundError = require("../errors/not-found-error");
 const Unauthorized = require("../errors/unauthorized-error");
+const ConflictError = require('../errors/conflict-error');
 
 const getUsers = (req, res, next) =>
   User.find({})
@@ -35,11 +36,29 @@ const getCurrentUser = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
 
-  return bcrypt
-    .hash(password, 10)
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new ConflictError("Пользователь с данныи email уже существует");
+      } else {
+        return bcrypt.hash(password, 10);
+      }
+    })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((user) => res.status(CREATED_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateUser = (req, res, next) => {
