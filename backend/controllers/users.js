@@ -117,11 +117,8 @@ const login = (req, res, next) => {
 const signout = (req, res) =>
   // очистим значение jwt в куках
   res
-    .cookie("jwt", "", {
-      secure: true,
-      sameSite: "none",
-    })
     .status(OK_SUCCESS_CODE)
+    .clearCookie("jwt")
     .send({ message: "Вы вышли из системы" });
 
 module.exports = {
