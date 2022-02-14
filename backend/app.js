@@ -15,7 +15,10 @@ const corsHandler = require("./middlewares/cors-handler");
 const limiter = require("./middlewares/rate-limit");
 
 const app = express();
-const { PORT = 3000, DB_PATH } = process.env;
+const {
+  PORT = 3000,
+  DB_PATH = `mongodb://localhost:27017/mestodb`
+} = process.env;
 
 app.use(limiter);
 app.use(bodyParser.json());
