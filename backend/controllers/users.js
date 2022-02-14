@@ -74,7 +74,19 @@ const updateUser = (req, res, next) => {
   )
     .orFail(new NotFoundError(`Пользователь с указанным ID не найден`))
     .then((user) => res.status(OK_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateAvatar = (req, res, next) => {
@@ -89,7 +101,19 @@ const updateAvatar = (req, res, next) => {
   )
     .orFail(new NotFoundError(`Пользователь с указанным ID не найден`))
     .then((user) => res.status(OK_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const login = (req, res, next) => {
