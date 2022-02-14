@@ -6,6 +6,8 @@ const User = require("../models/user");
 const { OK_SUCCESS_CODE, CREATED_SUCCESS_CODE } = require("../utils/constants");
 const NotFoundError = require("../errors/not-found-error");
 const Unauthorized = require("../errors/unauthorized-error");
+const ConflictError = require("../errors/conflict-error");
+const BadRequestError = require("../errors/bad-request-error");
 
 const getUsers = (req, res, next) =>
   User.find({})
@@ -35,11 +37,29 @@ const getCurrentUser = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
 
-  return bcrypt
-    .hash(password, 10)
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new ConflictError("Пользователь с данныи email уже существует");
+      } else {
+        return bcrypt.hash(password, 10);
+      }
+    })
     .then((hash) => User.create({ name, about, avatar, email, password: hash }))
     .then((user) => res.status(CREATED_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateUser = (req, res, next) => {
@@ -54,7 +74,19 @@ const updateUser = (req, res, next) => {
   )
     .orFail(new NotFoundError(`Пользователь с указанным ID не найден`))
     .then((user) => res.status(OK_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const updateAvatar = (req, res, next) => {
@@ -69,7 +101,19 @@ const updateAvatar = (req, res, next) => {
   )
     .orFail(new NotFoundError(`Пользователь с указанным ID не найден`))
     .then((user) => res.status(OK_SUCCESS_CODE).send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const login = (req, res, next) => {
@@ -103,7 +147,7 @@ const login = (req, res, next) => {
         return res
           .cookie("jwt", token, {
             httpOnly: true,
-            secure: true,
+            secure: NODE_ENV === "production",
             sameSite: "none",
             maxAge: 7 * 24 * 3600000,
           })
@@ -117,11 +161,8 @@ const login = (req, res, next) => {
 const signout = (req, res) =>
   // очистим значение jwt в куках
   res
-    .cookie("jwt", "", {
-      secure: true,
-      sameSite: "none",
-    })
     .status(OK_SUCCESS_CODE)
+    .clearCookie("jwt")
     .send({ message: "Вы вышли из системы" });
 
 module.exports = {

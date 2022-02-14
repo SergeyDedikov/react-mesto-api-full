@@ -2,6 +2,7 @@ const Card = require("../models/card");
 const { OK_SUCCESS_CODE, CREATED_SUCCESS_CODE } = require("../utils/constants");
 const NotFoundError = require("../errors/not-found-error");
 const Forbidden = require("../errors/forbidden-error");
+const BadRequestError = require("../errors/bad-request-error");
 
 const getCards = (req, res, next) =>
   Card.find({})
@@ -24,7 +25,19 @@ const createCard = (req, res, next) => {
   const { name, link } = req.body;
   return Card.create({ name, link, owner: req.user._id })
     .then((card) => res.status(CREATED_SUCCESS_CODE).send(card))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map((error) => error.message)
+              .join(". ")}`
+          )
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 const deleteCard = (req, res, next) => {
