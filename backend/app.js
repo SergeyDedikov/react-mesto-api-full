@@ -20,10 +20,10 @@ const {
   DB_PATH = `mongodb://localhost:27017/mestodb`
 } = process.env;
 
-app.use(limiter);
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(limiter);
 app.use(corsHandler); // обработаем CORS-запросы
 
 // Краш-тест
