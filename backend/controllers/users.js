@@ -162,7 +162,10 @@ const signout = (req, res) =>
   // очистим значение jwt в куках
   res
     .status(OK_SUCCESS_CODE)
-    .clearCookie("jwt")
+    .clearCookie("jwt", {
+      secure: NODE_ENV === "production",
+      sameSite: "none",
+    })
     .send({ message: "Вы вышли из системы" });
 
 module.exports = {
