@@ -17,7 +17,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
-import CrashTest from "./CrashTest";
 
 function App() {
   const history = useHistory();
