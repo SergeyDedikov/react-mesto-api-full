@@ -49,12 +49,6 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Краш-тест сервера
-  function getCrashTest() {
-    console.log("Сейчас произойдёт перезагрузка сервера!");
-    api.getCrash().catch(() => console.log("Ошибка сервера!"));
-  }
-
   // -- Запрос данных с сервера
   useEffect(() => {
     if (loggedIn) {
@@ -295,12 +289,6 @@ function App() {
         </Route>
         <Route path="/sign-in">
           <Login onLogin={onLogin} />
-        </Route>
-        <Route path="/crash-test">
-          <CrashTest
-            getCrashTest={getCrashTest}
-            handleTokenCheck={handleTokenCheck}
-          />
         </Route>
       </Switch>
 
