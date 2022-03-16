@@ -17,7 +17,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
-import CrashTest from "./CrashTest";
 
 function App() {
   const history = useHistory();
@@ -48,12 +47,6 @@ function App() {
   // -- Переменные состояний отправки данных
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Краш-тест сервера
-  function getCrashTest() {
-    console.log("Сейчас произойдёт перезагрузка сервера!");
-    api.getCrash().catch(() => console.log("Ошибка сервера!"));
-  }
 
   // -- Запрос данных с сервера
   useEffect(() => {
@@ -295,12 +288,6 @@ function App() {
         </Route>
         <Route path="/sign-in">
           <Login onLogin={onLogin} />
-        </Route>
-        <Route path="/crash-test">
-          <CrashTest
-            getCrashTest={getCrashTest}
-            handleTokenCheck={handleTokenCheck}
-          />
         </Route>
       </Switch>
 
